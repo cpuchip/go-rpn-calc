@@ -1,12 +1,8 @@
-package main
+package calculator
 
 import (
-	"bufio"
 	"fmt"
 	"math"
-	"os"
-	"strconv"
-	"strings"
 )
 
 type Calculator struct {
@@ -122,37 +118,13 @@ func (c *Calculator) recall(varName rune) {
 	}
 }
 
-func (c *Calculator) printStacks() {
+func (c *Calculator) PrintStacks() {
 	fmt.Printf("x: %.8g\ty: %.8g\ta: %.8g\tb: %.8g\n", c.stacks[0], c.stacks[1], c.stacks[2], c.stacks[3])
 }
 
-func main() {
-	calc := NewCalculator()
-	scanner := bufio.NewScanner(os.Stdin)
-	fmt.Println("RPN Calculator. Enter numbers, operations, or commands. Type 'exit' to quit.")
-	for {
-		calc.printStacks()
-		fmt.Print("> ")
-		if !scanner.Scan() {
-			break
-		}
-		line := scanner.Text()
-		if line == "exit" {
-			break
-		}
-		fields := strings.Fields(line)
-		for _, field := range fields {
-			if v, err := strconv.ParseFloat(field, 64); err == nil {
-				calc.push(v)
-			} else if len(field) == 3 && strings.ToUpper(field[:3]) == "STO" && len(field) == 4 {
-				calc.store(rune(strings.ToUpper(field[3:])[0]))
-			} else if len(field) == 3 && strings.ToUpper(field[:3]) == "REC" && len(field) == 4 {
-				calc.recall(rune(strings.ToUpper(field[3:])[0]))
-			} else if field == "STO" || field == "REC" {
-				fmt.Println("Usage: STOA or RECA (A-Z)")
-			} else {
-				calc.operate(strings.ToLower(field))
-			}
-		}
-	}
-}
+func (c *Calculator) Push(val float64)    { c.push(val) }
+func (c *Calculator) Pop() float64        { return c.pop() }
+func (c *Calculator) Peek() float64       { return c.peek() }
+func (c *Calculator) Operate(op string)   { c.operate(op) }
+func (c *Calculator) Store(varName rune)  { c.store(varName) }
+func (c *Calculator) Recall(varName rune) { c.recall(varName) }
