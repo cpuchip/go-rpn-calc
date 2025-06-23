@@ -122,6 +122,10 @@ func (c *Calculator) PrintStacks() {
 	fmt.Printf("x: %.8g\ty: %.8g\ta: %.8g\tb: %.8g\n", c.stacks[0], c.stacks[1], c.stacks[2], c.stacks[3])
 }
 
+func (c *Calculator) StackValues() [4]float64 {
+	return c.stacks
+}
+
 func (c *Calculator) Push(val float64)    { c.push(val) }
 func (c *Calculator) Pop() float64        { return c.pop() }
 func (c *Calculator) Peek() float64       { return c.peek() }
